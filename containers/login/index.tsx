@@ -14,7 +14,7 @@ const Login = () => {
     const { accessToken } = useSelector((state: RootState) => state.auth)
     
     if (accessToken) {
-        push('/dashboard/profile/')
+        push('/dashboard/mycourses/')
     }
 
     const handleBack = () => {
