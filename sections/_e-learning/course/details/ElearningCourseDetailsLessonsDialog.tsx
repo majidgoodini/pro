@@ -53,14 +53,14 @@ export default function ElearningCourseDetailsLessonsDialog({
       >
         <Iconify icon='carbon:close' />
       </IconButton>
-
-      <VideoJS
-        id={selectLesson?.id}
-        timeOfVideo={selectLesson?.userLessonCompleteds?.[0]?.timeOfVideo}
-        src={selectLesson?.videoUrl}
-        setShowNewUGQ={setShowNewUGQ}
-      />
-
+      <div style={{"direction":"ltr"}}>
+        <VideoJS
+          id={selectLesson?.id}
+          timeOfVideo={selectLesson?.userLessonCompleteds?.[0]?.timeOfVideo}
+          src={selectLesson?.videoUrl}
+          setShowNewUGQ={setShowNewUGQ}
+        />
+      </div>
       {/* <Player
             controls
             url={selectLesson?.videoUrl as string}
@@ -68,7 +68,7 @@ export default function ElearningCourseDetailsLessonsDialog({
             onEnded={onVideoEnded}
           /> */}
       {accessToken && showNewUGQ &&
-        <div style={{ position: 'fixed', top: "87%", left: "50%", transform: "translateX(-50%)" }}>
+        <div style={{ position: 'fixed', top: "10%", right: "0%", transform: "translateX(-50%)" }}>
           <Button btnType='primary' onClick={handleNewUGQ} >طراحی سوال برای آزمون</Button>
         </div>}
     </Dialog>
