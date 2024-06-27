@@ -47,12 +47,6 @@ export default function ElearningCourseDetailsLessonsDialog({
       onClose={onClose}
       PaperProps={{ sx: { overflow: 'hidden' } }}
     >
-      <IconButton
-        onClick={onClose}
-        sx={{ top: 16, left: 16, zIndex: 9, position: 'absolute' }}
-      >
-        <Iconify icon='carbon:close' />
-      </IconButton>
       <div style={{"direction":"ltr"}}>
         <VideoJS
           id={selectLesson?.id}

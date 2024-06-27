@@ -107,20 +107,9 @@ export const VideoJS = (props: any) => {
   // }, [playerRef])
 
   return (
-    <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions" clipStartTime={10}>
+    <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions" clipStartTime={10}
+      poster='https://newcdn.namatek.com/playerposter.jpg'>
       <DefaultVideoLayout icons={defaultLayoutIcons} />
-
-      <Controls.Root className="vds-controls">
-        <Controls.Group className="vds-controls-group">
-          <SeekButton className="vds-button" seconds={-10} style={{ marginLeft: "3rem" }}>
-            -10s
-          </SeekButton>
-          <SeekButton className="vds-button" seconds={10} style={{ marginLeft: "1rem" }}>
-            +10s
-          </SeekButton>
-        </Controls.Group>
-      </Controls.Root>
-
       <MediaProvider />
 
     </MediaPlayer >
