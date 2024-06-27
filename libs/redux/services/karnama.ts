@@ -1,6 +1,7 @@
 import { emptySplitApi as api } from './emptyApi'
 export const addTagTypes = [
   'Account',
+  'Appsmith',
   'Categories',
   'Comment',
   'Company',
@@ -8,7 +9,6 @@ export const addTagTypes = [
   'Exam',
   'Gift',
   'Mentor',
-  'Order',
   'Payments',
   'Pricing',
   'Qualifications',
@@ -64,14 +64,6 @@ export const injectedRtkApi = api
           url: `/Account/VerfySignInByOTP`,
           method: 'POST',
           body: queryArg.verfySignInByOtpCommand,
-        }),
-        invalidatesTags: ['Account'],
-      }),
-      fromInre: build.mutation<FromInreApiResponse, FromInreApiArg>({
-        query: (queryArg) => ({
-          url: `/Account/FromInre`,
-          method: 'POST',
-          body: queryArg.user,
         }),
         invalidatesTags: ['Account'],
       }),
@@ -135,6 +127,120 @@ export const injectedRtkApi = api
           body: queryArg.resetPasswordForm,
         }),
         invalidatesTags: ['Account'],
+      }),
+      aUploadFile: build.mutation<AUploadFileApiResponse, AUploadFileApiArg>({
+        query: (queryArg) => ({
+          url: `/api/Appsmith/AUploadFile`,
+          method: 'POST',
+          body: queryArg.body,
+          params: { path: queryArg.path },
+        }),
+        invalidatesTags: ['Appsmith'],
+      }),
+      aAddCompanyUser: build.mutation<
+        AAddCompanyUserApiResponse,
+        AAddCompanyUserApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/api/Appsmith/AAddCompanyUser`,
+          method: 'POST',
+          params: {
+            name: queryArg.name,
+            lastname: queryArg.lastname,
+            mobile: queryArg.mobile,
+          },
+        }),
+        invalidatesTags: ['Appsmith'],
+      }),
+      aCompanySegments: build.query<
+        ACompanySegmentsApiResponse,
+        ACompanySegmentsApiArg
+      >({
+        query: () => ({ url: `/api/Appsmith/ACompanySegments` }),
+        providesTags: ['Appsmith'],
+      }),
+      aCreateCertificate: build.query<
+        ACreateCertificateApiResponse,
+        ACreateCertificateApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/api/Appsmith/ACreateCertificate`,
+          params: { examResultId: queryArg.examResultId },
+        }),
+        providesTags: ['Appsmith'],
+      }),
+      aCompanyUsers: build.query<ACompanyUsersApiResponse, ACompanyUsersApiArg>(
+        {
+          query: (queryArg) => ({
+            url: `/api/Appsmith/ACompanyUsers`,
+            params: { courseId: queryArg.courseId },
+          }),
+          providesTags: ['Appsmith'],
+        }
+      ),
+      aCompanyUser: build.query<ACompanyUserApiResponse, ACompanyUserApiArg>({
+        query: (queryArg) => ({
+          url: `/api/Appsmith/ACompanyUser`,
+          params: { id: queryArg.id },
+        }),
+        providesTags: ['Appsmith'],
+      }),
+      aCompanyAdminCredits: build.query<
+        ACompanyAdminCreditsApiResponse,
+        ACompanyAdminCreditsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/api/Appsmith/ACompanyAdminCredits`,
+          params: { id: queryArg.id },
+        }),
+        providesTags: ['Appsmith'],
+      }),
+      aAddCompanyAdminCredit: build.mutation<
+        AAddCompanyAdminCreditApiResponse,
+        AAddCompanyAdminCreditApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/api/Appsmith/AAddCompanyAdminCredit`,
+          method: 'POST',
+          params: {
+            id: queryArg.id,
+            courseId: queryArg.courseId,
+            credit: queryArg.credit,
+            days: queryArg.days,
+          },
+        }),
+        invalidatesTags: ['Appsmith'],
+      }),
+      aSetUserInfo: build.mutation<ASetUserInfoApiResponse, ASetUserInfoApiArg>(
+        {
+          query: (queryArg) => ({
+            url: `/api/Appsmith/ASetUserInfo`,
+            method: 'POST',
+            params: {
+              id: queryArg.id,
+              segmentId1: queryArg.segmentId1,
+              segmentValueId1: queryArg.segmentValueId1,
+              segmentId2: queryArg.segmentId2,
+              segmentValueId2: queryArg.segmentValueId2,
+            },
+          }),
+          invalidatesTags: ['Appsmith'],
+        }
+      ),
+      aChangeCreditAndActive: build.mutation<
+        AChangeCreditAndActiveApiResponse,
+        AChangeCreditAndActiveApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/api/Appsmith/AChangeCreditAndActive`,
+          method: 'POST',
+          params: {
+            id: queryArg.id,
+            credit: queryArg.credit,
+            isActive: queryArg.isActive,
+          },
+        }),
+        invalidatesTags: ['Appsmith'],
       }),
       getApiCategories: build.query<
         GetApiCategoriesApiResponse,
@@ -399,10 +505,6 @@ export const injectedRtkApi = api
         query: () => ({ url: `/Mentor/GetMentorshipUserLogs`, method: 'POST' }),
         invalidatesTags: ['Mentor'],
       }),
-      getAllOrders: build.query<GetAllOrdersApiResponse, GetAllOrdersApiArg>({
-        query: () => ({ url: `/api/Order/GetAllOrders` }),
-        providesTags: ['Order'],
-      }),
       myPayments: build.query<MyPaymentsApiResponse, MyPaymentsApiArg>({
         query: () => ({ url: `/api/Payments/MyPayments` }),
         providesTags: ['Payments'],
@@ -489,10 +591,6 @@ export type VerfySignInByOtpApiResponse = /** status 200 Success */ Token
 export type VerfySignInByOtpApiArg = {
   verfySignInByOtpCommand: VerfySignInByOtpCommand
 }
-export type FromInreApiResponse = /** status 200 Success */ Token
-export type FromInreApiArg = {
-  user: User
-}
 export type FromNamatekApiResponse = unknown
 export type FromNamatekApiArg = {
   userWithCourse: UserWithCourse
@@ -518,6 +616,61 @@ export type ForgetPasswordApiArg = {
 export type ResetPasswordApiResponse = unknown
 export type ResetPasswordApiArg = {
   resetPasswordForm: ResetPasswordForm
+}
+export type AUploadFileApiResponse = unknown
+export type AUploadFileApiArg = {
+  path?: string
+  body: {
+    file?: Blob
+  }
+}
+export type AAddCompanyUserApiResponse = unknown
+export type AAddCompanyUserApiArg = {
+  name?: string
+  lastname?: string
+  mobile?: string
+}
+export type ACompanySegmentsApiResponse =
+  /** status 200 Success */ CompanyUserDto[]
+export type ACompanySegmentsApiArg = void
+export type ACreateCertificateApiResponse = unknown
+export type ACreateCertificateApiArg = {
+  examResultId?: number
+}
+export type ACompanyUsersApiResponse = unknown
+export type ACompanyUsersApiArg = {
+  courseId?: number
+}
+export type ACompanyUserApiResponse = /** status 200 Success */ CompanyUser
+export type ACompanyUserApiArg = {
+  id?: number
+}
+export type ACompanyAdminCreditsApiResponse =
+  /** status 200 Success */ CompanyUserDto[]
+export type ACompanyAdminCreditsApiArg = {
+  id?: number
+}
+export type AAddCompanyAdminCreditApiResponse =
+  /** status 200 Success */ CompanyUserDto[]
+export type AAddCompanyAdminCreditApiArg = {
+  id?: number
+  courseId?: number
+  credit?: number
+  days?: number
+}
+export type ASetUserInfoApiResponse = /** status 200 Success */ CompanyUserDto[]
+export type ASetUserInfoApiArg = {
+  id?: number
+  segmentId1?: number
+  segmentValueId1?: number
+  segmentId2?: number
+  segmentValueId2?: number
+}
+export type AChangeCreditAndActiveApiResponse = unknown
+export type AChangeCreditAndActiveApiArg = {
+  id?: number
+  credit?: number
+  isActive?: boolean
 }
 export type GetApiCategoriesApiResponse = /** status 200 Success */ Category[]
 export type GetApiCategoriesApiArg = void
@@ -605,7 +758,7 @@ export type LogApiArg = {
 }
 export type SuperPremiumCoursesApiResponse = /** status 200 Success */ Course[]
 export type SuperPremiumCoursesApiArg = void
-export type MyApiResponse = /** status 200 Success */ Course[]
+export type MyApiResponse = /** status 200 Success */ UserCoursesDto[]
 export type MyApiArg = void
 export type OthersApiResponse = /** status 200 Success */ Course[]
 export type OthersApiArg = {
@@ -647,8 +800,6 @@ export type AddSubUsersCreditApiArg = {
 export type GetMentorshipUserLogsApiResponse =
   /** status 200 Success */ MentorUserLog[]
 export type GetMentorshipUserLogsApiArg = void
-export type GetAllOrdersApiResponse = /** status 200 Success */ Order[]
-export type GetAllOrdersApiArg = void
 export type MyPaymentsApiResponse = /** status 200 Success */ Payment[]
 export type MyPaymentsApiArg = void
 export type ReceiptApiResponse = /** status 200 Success */ Payment
@@ -719,7 +870,6 @@ export type Deal = {
 }
 export type Customer = {
   id?: number
-  name?: string | null
   mobile?: string | null
   mobile2?: string | null
   email?: string | null
@@ -788,8 +938,6 @@ export type Country = {
   profiles?: Profile[] | null
 }
 export type Profile = {
-  firstName?: string | null
-  lastName?: string | null
   gender?: boolean | null
   nationalCode?: string | null
   birthday?: string | null
@@ -799,6 +947,9 @@ export type Profile = {
   jobStatusId?: number | null
   profileImage?: string | null
   userId?: number
+  nickname?: string | null
+  address?: string | null
+  postalcode?: string | null
   city?: City
   country?: Country
   province?: Province
@@ -970,8 +1121,16 @@ export type CompanyMentorAccess = {
   mentorId?: number
   segmentValueId?: number
   company?: Company
-  mentor?: AspNetUser
   segmentValue?: CompanySegmentValue
+}
+export type CompanySmsTemplate = {
+  id?: number
+  companyId?: number
+  adminId?: number
+  template?: string | null
+  isApproved?: boolean
+  insertDate?: string
+  company?: Company
 }
 export type CompanyUser = {
   id?: number
@@ -1041,7 +1200,25 @@ export type ExamResult = {
   passed?: boolean | null
   quiz?: Quiz
   user?: AspNetUser
+  examPermissions?: ExamPermission[] | null
   userQuestionAnswers?: UserQuestionAnswer[] | null
+}
+export type ExamPermission = {
+  id?: number
+  userId?: number
+  courseId?: number
+  insertDate?: string
+  usedDate?: string | null
+  note?: string | null
+  examResultId?: number | null
+  count?: number
+  maxCount?: number
+  allow?: boolean | null
+  quizId?: number | null
+  course?: Course
+  examResult?: ExamResult
+  quiz?: Quiz
+  user?: AspNetUser
 }
 export type Quiz = {
   id?: number
@@ -1063,6 +1240,8 @@ export type Quiz = {
   hasNegativeScore?: boolean
   company?: Company
   course?: Course
+  user?: AspNetUser
+  examPermissions?: ExamPermission[] | null
   examResults?: ExamResult[] | null
   questions?: Question[] | null
 }
@@ -1074,6 +1253,7 @@ export type Company = {
   primaryColor?: string | null
   secondaryColor?: string | null
   smstemplate?: string | null
+  letExam?: boolean | null
   companyAdminCredits?: CompanyAdminCredit[] | null
   companyAdmins?: CompanyAdmin[] | null
   companyCourseVisiblities?: CompanyCourseVisiblity[] | null
@@ -1081,6 +1261,7 @@ export type Company = {
   companyIpRanges?: CompanyIpRange[] | null
   companyMentorAccesses?: CompanyMentorAccess[] | null
   companySegments?: CompanySegment[] | null
+  companySmsTemplates?: CompanySmsTemplate[] | null
   companyUsers?: CompanyUser[] | null
   quizzes?: Quiz[] | null
 }
@@ -1112,6 +1293,16 @@ export type CourseTag = {
   course?: Course
   tag?: Tag
 }
+export type PaymentToTeacher = {
+  id?: number
+  teacherId?: number
+  insertDate?: string
+  paymentDate?: string
+  amount?: number
+  paid?: boolean
+  referenceNumber?: string | null
+  teacher?: Teacher
+}
 export type Teacher = {
   id?: number
   title?: string | null
@@ -1119,12 +1310,15 @@ export type Teacher = {
   bio?: string | null
   avatar?: string | null
   userId?: number | null
+  user?: AspNetUser
   courseTeachers?: CourseTeacher[] | null
+  paymentToTeachers?: PaymentToTeacher[] | null
 }
 export type CourseTeacher = {
   id?: number
   courseId?: number
   teacherId?: number
+  share?: number
   course?: Course
   teacher?: Teacher
 }
@@ -1183,28 +1377,42 @@ export type Exam = {
   examQuestions?: ExamQuestion[] | null
   userAnswers?: UserAnswer[] | null
 }
-export type Order = {
+export type KlassUser = {
   id?: number
-  totalAmount?: number
-  insertDate?: string
-  updateDate?: string
-  discount?: number
-  discountCode?: string | null
-  wooOrderId?: number | null
+  klassId?: number
   userId?: number
+  klass?: Klass
   user?: AspNetUser
-  orderItems?: OrderItem[] | null
+}
+export type Klass = {
+  id?: number
+  code?: string | null
+  courseId?: number | null
+  startDate?: string | null
+  endDate?: string | null
+  companyId?: number | null
+  course?: Course
+  klassUsers?: KlassUser[] | null
 }
 export type OrderItem = {
   id?: number
-  orderId?: number
+  orderId?: number | null
   courseId?: number
   price?: number
   quantity?: number
   discount?: number | null
   share?: number | null
+  insertDate?: string | null
+  updateDate?: string | null
+  discountCode?: string | null
+  wooOrderId?: number | null
+  userId?: number
+  isWarranty?: boolean
+  stateId?: number
+  note?: string | null
+  disabled?: boolean
   course?: Course
-  order?: Order
+  user?: AspNetUser
 }
 export type Attachment = {
   id?: number
@@ -1226,21 +1434,22 @@ export type PlayLog = {
   lesson?: Lesson
   user?: AspNetUser
 }
-export type Ugq = {
+export type SectionQuestion = {
   id?: number
-  userId?: number
-  question?: string | null
+  title?: string | null
+  sectionId?: number
+  lessonId?: number | null
+  imageUrl?: string | null
   answer1?: string | null
+  answerImage1?: string | null
   answer2?: string | null
+  answerImage2?: string | null
   answer3?: string | null
+  answerImage3?: string | null
   answer4?: string | null
-  adminDesc?: string | null
-  isConfirmed?: boolean
-  insertDate?: string
-  lessonId?: number
-  timeOfVideo?: number
+  answerImage4?: string | null
   lesson?: Lesson
-  user?: AspNetUser
+  section?: Section
 }
 export type UserLessonCompleted = {
   id?: number
@@ -1273,24 +1482,8 @@ export type Lesson = {
   attachments?: Attachment[] | null
   comments?: Comment[] | null
   playLogs?: PlayLog[] | null
-  ugqs?: Ugq[] | null
+  sectionQuestions?: SectionQuestion[] | null
   userLessonCompleteds?: UserLessonCompleted[] | null
-}
-export type SectionQuestion = {
-  id?: number
-  title?: string | null
-  sectionId?: number
-  lessonId?: number | null
-  imageUrl?: string | null
-  answer1?: string | null
-  answerImage1?: string | null
-  answer2?: string | null
-  answerImage2?: string | null
-  answer3?: string | null
-  answerImage3?: string | null
-  answer4?: string | null
-  answerImage4?: string | null
-  section?: Section
 }
 export type Section = {
   id?: number
@@ -1316,6 +1509,7 @@ export type UserMentorCredit = {
   totalCredit?: number
   insertDate?: string
   course?: Course
+  user?: AspNetUser
 }
 export type Course = {
   id?: number
@@ -1334,6 +1528,8 @@ export type Course = {
   superPremium?: boolean
   filesLink?: string | null
   lessonCount?: number | null
+  share?: number | null
+  threeCharId?: string | null
   category?: Category
   provider?: ContentProvider
   comments?: Comment[] | null
@@ -1343,7 +1539,9 @@ export type Course = {
   courseTags?: CourseTag[] | null
   courseTeachers?: CourseTeacher[] | null
   enrolls?: Enroll[] | null
+  examPermissions?: ExamPermission[] | null
   exams?: Exam[] | null
+  klasses?: Klass[] | null
   orderItems?: OrderItem[] | null
   quizzes?: Quiz[] | null
   sections?: Section[] | null
@@ -1362,6 +1560,11 @@ export type Comment = {
   course?: Course
   lesson?: Lesson
   user?: AspNetUser
+}
+export type Degree = {
+  id?: number
+  title?: string | null
+  educations?: Education[] | null
 }
 export type SubStudyField = {
   id?: number
@@ -1400,6 +1603,7 @@ export type Education = {
   gpa?: number | null
   degreeId?: number | null
   certificateImage?: string | null
+  degree?: Degree
   studyField?: StudyField
   studyPlace?: StudyPlace
   studySubField?: SubStudyField
@@ -1458,6 +1662,27 @@ export type GiftUsage = {
   gift?: Gift
   user?: AspNetUser
 }
+export type Order = {
+  id?: number
+  totalAmount?: number
+  insertDate?: string
+  updateDate?: string
+  discount?: number
+  discountCode?: string | null
+  wooOrderId?: number | null
+  userId?: number
+  user?: AspNetUser
+}
+export type Parcel = {
+  id?: number
+  userId?: number
+  insertDate?: string
+  done?: boolean
+  trackingCode?: string | null
+  transferType?: string | null
+  items?: string | null
+  user?: AspNetUser
+}
 export type Payment = {
   id?: number
   userId?: number
@@ -1484,11 +1709,66 @@ export type Session = {
   ip?: number | null
   user?: AspNetUser
 }
+export type MedianaStatus = {
+  id?: number
+  status?: string | null
+  title?: string | null
+  needRecheck?: boolean
+  sms?: Sm[] | null
+}
+export type Sm = {
+  id?: number
+  status?: number | null
+  sender?: string | null
+  receptor?: number
+  date?: string
+  adminId?: number | null
+  userId?: number
+  medianaId?: number | null
+  text?: string | null
+  parts?: number | null
+  statusNavigation?: MedianaStatus
+  user?: AspNetUser
+}
 export type Suggestion = {
   id?: number
   userId?: number | null
   text?: string | null
   insertDate?: string
+  user?: AspNetUser
+}
+export type Ugq = {
+  id?: number
+  userId?: number
+  question?: string | null
+  answer1?: string | null
+  answer2?: string | null
+  answer3?: string | null
+  answer4?: string | null
+  adminDesc?: string | null
+  isConfirmed?: boolean
+  insertDate?: string
+  lessonId?: number
+  timeOfVideo?: number
+  user?: AspNetUser
+}
+export type UserCredit = {
+  id?: number
+  userId?: number | null
+  usedCredit?: number
+  totalCredit?: number
+  totalPrice?: number
+  insertDate?: string
+  startedUsingDate?: string | null
+  pricePerMinute?: number | null
+  endUsingDate?: string | null
+  user?: AspNetUser
+}
+export type UserMentor = {
+  id?: number
+  mentorId?: number
+  userId?: number
+  description?: string | null
   user?: AspNetUser
 }
 export type UserVerification = {
@@ -1539,9 +1819,19 @@ export type AspNetUser = {
   lockoutEnd?: string | null
   lockoutEnabled?: boolean
   accessFailedCount?: number
+  companyName?: string | null
+  jobTitle?: string | null
   joinDate?: string
   customerId?: number | null
+  birthDate?: string | null
+  province?: string | null
+  city?: string | null
+  gender?: boolean | null
   uuid?: string
+  oldUserId?: number | null
+  firstName?: string | null
+  lastName?: string | null
+  tags?: string | null
   profile?: Profile
   aspNetUserClaims?: AspNetUserClaim[] | null
   aspNetUserLogins?: AspNetUserLogin[] | null
@@ -1551,27 +1841,36 @@ export type AspNetUser = {
   companyAdminCreditAdmins?: CompanyAdminCredit[] | null
   companyAdminCreditUsers?: CompanyAdminCredit[] | null
   companyAdmins?: CompanyAdmin[] | null
-  companyMentorAccesses?: CompanyMentorAccess[] | null
   companyUserSegments?: CompanyUserSegment[] | null
   companyUsers?: CompanyUser[] | null
   educations?: Education[] | null
   enrolls?: Enroll[] | null
+  examPermissions?: ExamPermission[] | null
   examResults?: ExamResult[] | null
   exams?: Exam[] | null
   experienceLanguages?: ExperienceLanguage[] | null
   experiences?: Experience[] | null
   giftUsages?: GiftUsage[] | null
+  klassUsers?: KlassUser[] | null
+  orderItems?: OrderItem[] | null
   orders?: Order[] | null
+  parcels?: Parcel[] | null
   payments?: Payment[] | null
   playLogs?: PlayLog[] | null
   premia?: Premium[] | null
   questions?: Question[] | null
+  quizzes?: Quiz[] | null
   sessions?: Session[] | null
   skills?: Skill[] | null
+  sms?: Sm[] | null
   suggestions?: Suggestion[] | null
+  teachers?: Teacher[] | null
   ugqs?: Ugq[] | null
   userAnswers?: UserAnswer[] | null
+  userCredits?: UserCredit[] | null
   userLessonCompleteds?: UserLessonCompleted[] | null
+  userMentorCredits?: UserMentorCredit[] | null
+  userMentors?: UserMentor[] | null
   userVerifications?: UserVerification[] | null
   favorites?: Favorite[] | null
   roles?: AspNetRole[] | null
@@ -1590,12 +1889,6 @@ export type Premium = {
 export type SubUser = {
   id?: number
   username?: string | null
-}
-export type UserMentor = {
-  id?: number
-  mentorId?: number
-  userId?: number
-  description?: string | null
 }
 export type UserInfo = {
   id?: number
@@ -1661,26 +1954,6 @@ export type VerfySignInByOtpCommand = {
   userName?: string | null
   code?: string | null
 }
-export type User = {
-  id?: number
-  userName?: string | null
-  normalizedUserName?: string | null
-  email?: string | null
-  normalizedEmail?: string | null
-  emailConfirmed?: boolean
-  passwordHash?: string | null
-  securityStamp?: string | null
-  concurrencyStamp?: string | null
-  phoneNumber?: string | null
-  phoneNumberConfirmed?: boolean
-  twoFactorEnabled?: boolean
-  lockoutEnd?: string | null
-  lockoutEnabled?: boolean
-  accessFailedCount?: number
-  customerId?: number | null
-  joinDate?: string
-  uuid?: string
-}
 export type UserWithCourse = {
   id?: number
   userName?: string | null
@@ -1698,6 +1971,8 @@ export type UserWithCourse = {
   lockoutEnabled?: boolean
   accessFailedCount?: number
   customerId?: number | null
+  firstName?: string | null
+  lastName?: string | null
   joinDate?: string
   uuid?: string
   coursesIds?: number[] | null
@@ -1723,20 +1998,6 @@ export type ResetPasswordForm = {
   userName?: string | null
   newPassword?: string | null
 }
-export type CategoryCount = {
-  id?: number
-  title?: string | null
-  count?: number
-}
-export type CommentDto = {
-  text?: string | null
-  author?: string | null
-  courseId?: number
-  lessonId?: number | null
-  rate?: number
-  id?: number | null
-  insertDate?: string | null
-}
 export type CompanyUserDto = {
   id?: number
   isActive?: boolean
@@ -1752,6 +2013,20 @@ export type CompanyUserDto = {
   courseCount?: number
   pendingCount?: number
 }
+export type CategoryCount = {
+  id?: number
+  title?: string | null
+  count?: number
+}
+export type CommentDto = {
+  text?: string | null
+  author?: string | null
+  courseId?: number
+  lessonId?: number | null
+  rate?: number
+  id?: number | null
+  insertDate?: string | null
+}
 export type CourseDto = {
   id?: number
   title?: string | null
@@ -1761,14 +2036,24 @@ export type CourseDto = {
   imageUrl?: string | null
   categoryId?: number
   slug?: string | null
-  category?: Category
   categoryTitle?: string | null
+  category?: Category
 }
 export type PlayLogDto = {
   action?: string | null
   lessonId?: number
   time?: number
   speed?: number
+}
+export type CachedUserCourseSeen = {
+  userId?: number
+  courseId?: number
+  seenMinutes?: number | null
+  totalMinutes?: number | null
+}
+export type UserCoursesDto = {
+  course?: Course
+  cachedUserCourseSeen?: CachedUserCourseSeen
 }
 export type UserLessonViewMinute = {
   userId?: number
@@ -1780,7 +2065,6 @@ export type UserLessonViewMinute = {
 }
 export type CourseDetailDto = {
   id?: number
-  errorMessage?: string | null
   title?: string | null
   titleFa?: string | null
   totalDuration?: number | null
@@ -1791,6 +2075,7 @@ export type CourseDetailDto = {
   filesLink?: string | null
   description?: string | null
   superPremium?: boolean
+  errorMessage?: string | null
   sections?: Section[] | null
   courseTeachers?: CourseTeacher[] | null
   category?: Category
@@ -1801,6 +2086,8 @@ export type DistinctedPlayLog = {
   userId?: number
   courseId?: number
   seenMinutes?: number | null
+  lastWeekSeenMinutes?: number | null
+  lastLastWeekSeenMinutes?: number | null
   totalMinutes?: number | null
   titleFa?: string | null
   examQuestions?: number | null
@@ -1862,7 +2149,6 @@ export const {
   useInfoMutation,
   useSetInfoMutation,
   useVerfySignInByOtpMutation,
-  useFromInreMutation,
   useFromNamatekMutation,
   useSetUserPasswordMutation,
   useAddSubUserMutation,
@@ -1870,6 +2156,21 @@ export const {
   useLogoutMutation,
   useForgetPasswordMutation,
   useResetPasswordMutation,
+  useAUploadFileMutation,
+  useAAddCompanyUserMutation,
+  useACompanySegmentsQuery,
+  useLazyACompanySegmentsQuery,
+  useACreateCertificateQuery,
+  useLazyACreateCertificateQuery,
+  useACompanyUsersQuery,
+  useLazyACompanyUsersQuery,
+  useACompanyUserQuery,
+  useLazyACompanyUserQuery,
+  useACompanyAdminCreditsQuery,
+  useLazyACompanyAdminCreditsQuery,
+  useAAddCompanyAdminCreditMutation,
+  useASetUserInfoMutation,
+  useAChangeCreditAndActiveMutation,
   useGetApiCategoriesQuery,
   useLazyGetApiCategoriesQuery,
   useGetApiCategoriesCountsQuery,
@@ -1921,8 +2222,6 @@ export const {
   useLazyGetSubUsersCreditQuery,
   useAddSubUsersCreditMutation,
   useGetMentorshipUserLogsMutation,
-  useGetAllOrdersQuery,
-  useLazyGetAllOrdersQuery,
   useMyPaymentsQuery,
   useLazyMyPaymentsQuery,
   useReceiptQuery,

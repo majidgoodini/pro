@@ -12,6 +12,7 @@ import styles from './dashboard.module.scss'
 import type { RootState } from 'libs/redux/store'
 import { Alert } from '@mui/material'
 import LoadingScreen from 'components/loading-screen/LoadingScreen'
+import type { Course } from 'libs/redux/services/karnama'
 
 const DashboardComponent = () => {
   const { data: courses, isLoading } = useMyQuery()
@@ -30,9 +31,9 @@ const DashboardComponent = () => {
       gutter={[16, 16]}
       wrap
     >
-      {courses ? courses?.map((course) => (
+      {courses ? courses?.map(({ course, cachedUserCourseSeen }) => (
         <span style={{ width: "320px", marginInlineEnd: "1rem", marginBlockEnd: "1rem" }}>
-          <ElearningCourseItem course={course} vertical />
+          <ElearningCourseItem duration={cachedUserCourseSeen?.seenMinutes as number ?? 0} course={course as Course} vertical />
         </span>
       )) : <Alert severity="error">در حال حاضر آموزشی برای شما فعال نیست.</Alert>
       }

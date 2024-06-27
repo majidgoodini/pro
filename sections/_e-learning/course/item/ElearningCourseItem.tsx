@@ -21,9 +21,10 @@ import { durationToString } from 'utils/helpers/formatTime'
 type Props = {
   course: CourseDto
   vertical?: boolean
+  duration?: number
 }
 
-export default function ElearningCourseItem({ course, vertical }: Props) {
+export default function ElearningCourseItem({ course, vertical,duration }: Props) {
   const { asPath } = useRouter()
 
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -39,10 +40,7 @@ export default function ElearningCourseItem({ course, vertical }: Props) {
     },
   }))
 
-  let duration = 0;
-
-
-  return (
+   return (
     <Link href={`/courses/${course.id}/${course.titleFa}/`}>
       <Card
         sx={{
@@ -127,12 +125,12 @@ export default function ElearningCourseItem({ course, vertical }: Props) {
                 <>
                   <Row className='w-100' justify='space-between'>
                     <span data-selector='badge'></span>
-                    <span data-selector='badge' style={{ color: "#1a90ff", fontWeight: "bold" }}>{(100 * duration / (course?.totalDuration as number)).toFixed(0)}%</span>
+                    <span data-selector='badge' style={{ color: "#1a90ff", fontWeight: "bold" }}>{(100 * duration / (course?.totalDuration as number/60)).toFixed(0)}%</span>
                   </Row>
                   <BorderLinearProgress
                     variant='determinate'
                     value={
-                      100 * duration / (course?.totalDuration as number)
+                      100 * duration / (course?.totalDuration as number/60 )
                     }
                   />
                 </>
