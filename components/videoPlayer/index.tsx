@@ -107,7 +107,7 @@ export const VideoJS = (props: any) => {
   // }, [playerRef])
 
   return (
-    <MediaPlayer onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions" clipStartTime={10}>
+    <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions" clipStartTime={10}>
       <DefaultVideoLayout icons={defaultLayoutIcons} />
 
       <Controls.Root className="vds-controls">
