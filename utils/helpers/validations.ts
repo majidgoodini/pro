@@ -11,7 +11,11 @@ export const regex = {
   registrationNo: /^[0-9]{1,6}$/g,
   telephoneNumber: /^0[0-9]{2,}[0-9]{8,}$/g,
 }
-
+const persianToEnglishNumbers = (str:string) => {
+  const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+  const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  return str.replace(/[\u06F0-\u06F9]/g, (char) => englishNumbers[persianNumbers.indexOf(char)]);
+}
 export const validation = {
   REGISTER_PASSWORD: {
     required: 'error.password',
@@ -25,7 +29,7 @@ export const validation = {
           const phoneNumber = {
             message: 'error.username.phoneNumber',
             valid: () =>
-              regex['phoneNumber'].test(String(value).toLowerCase().trim()),
+              regex['phoneNumber'].test(persianToEnglishNumbers(String(value)).trim()),
           }
           const email = {
             message: 'error.username.email',
