@@ -218,6 +218,7 @@ const Navbar = () => {
                 <Logo
                   src={data?.logo || '/svg/layout/navbar-logo.svg'}
                   title={data?.inCompanyTitle as string}
+                  titleColor={data?.inCompanyPrimaryColor as string}
                 />
               ) : (
                 <Button data-selector='back' onClick={cancelSearch}>

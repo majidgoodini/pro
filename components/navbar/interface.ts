@@ -7,6 +7,7 @@ export interface LogoProps {
   className?: string
   src: string
   title?: string
+  titleColor?: string
   shouldUpdate?: boolean
 }
 

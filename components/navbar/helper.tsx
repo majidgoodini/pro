@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl'
 import { useSelector } from 'react-redux'
 import { omit } from 'utils/helpers/global'
 import { LampSvg } from 'assets/icons'
-import  ExpandMoreRounded  from '@mui/icons-material/ExpandMoreRounded'
+import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded'
 import Row from 'components/ui/Row'
 import Button from 'components/ui/Button'
 import Dropdown from 'components/ui/Dropdown'
@@ -118,13 +118,14 @@ export const NavbarTab = () => {
   )
 }
 
-export const Logo = ({ className, src, title }: LogoProps) => {
+export const Logo = ({ className, src, title, titleColor }: LogoProps) => {
   const intl = useIntl()
   return (
     <Button className={styles['logo']} href='/'>
       <img src={src} alt='Logo' className={className} />
-      {title ?? intl.formatMessage({ id: 'rasmio' })}
-
+      <span style={{"color":'#'+titleColor}}>
+        {title ?? intl.formatMessage({ id: 'rasmio' })}
+      </span>
     </Button>
   )
 }
