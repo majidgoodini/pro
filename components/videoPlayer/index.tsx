@@ -65,7 +65,7 @@ export const VideoJS = (props: any) => {
           localSendLog('Playing')
           return 0
         }
-        console.log(t)
+        localStorage.setItem(`currentTimeVideo-${id}`,(player.current?.currentTime as number).toFixed(0))
         return t + (player.current?.playbackRate as number ?? 0)
       })
 
@@ -73,6 +73,7 @@ export const VideoJS = (props: any) => {
   }
   useEffect(() => {
     setShowNewUGQ(paused)
+    
     const interval = setInterval(checkAndCount, 1000)
     return () => {
       clearInterval(interval)
@@ -86,13 +87,7 @@ export const VideoJS = (props: any) => {
   }
 
 
-  // player.on('timeupdate', () => {
-  //   const currentTime = player.currentTime()
-  //   localStorage.setItem(
-  //     `currentTimeVideo-${(window as any).lessonIdProps}`,
-  //     currentTime
-  //   )
-  // })
+ 
 
 
   // useEffect(() => {
