@@ -28,26 +28,26 @@ export const VideoJS = (props: any) => {
       player.current.currentTime = changeCurrentTime
   }, [changeCurrentTime])
 
-  useEffect(() => { 
-    const handleOrientationChange = () => {
-      console.log(screen.orientation.angle)
-      if (screen.orientation.angle === 90 || screen.orientation.angle === -90) {
-        // Device is in landscape mode
-        player.current?.enterFullscreen()
-      } else {
-        // Device is in portrait mode
-        player.current?.exitFullscreen()
+  // useEffect(() => { 
+  //   const handleOrientationChange = () => {
+  //     console.log(screen.orientation.angle)
+  //     if (screen.orientation.angle === 90 || screen.orientation.angle === -90) {
+  //       // Device is in landscape mode
+  //       player.current?.enterFullscreen()
+  //     } else {
+  //       // Device is in portrait mode
+  //       player.current?.exitFullscreen()
 
-      }
-    };
+  //     }
+  //   };
 
-    window.addEventListener('orientationchange', handleOrientationChange);
+  //   window.addEventListener('orientationchange', handleOrientationChange);
 
-    // Cleanup listener on component unmount
-    return () => {
-      window.removeEventListener('orientationchange', handleOrientationChange);
-    };
-  }, []);
+  //   // Cleanup listener on component unmount
+  //   return () => {
+  //     window.removeEventListener('orientationchange', handleOrientationChange);
+  //   };
+  // }, []);
 
 
   const localSendLog = (action: string) => {

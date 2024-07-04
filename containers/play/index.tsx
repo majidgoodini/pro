@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import { playDrawer } from 'libs/redux/slices/navbar'
 import { useDeleteApiLessonNotesByIdMutation, useGetApiCoursesByIdQuery, useGetApiLessonNotesQuery, usePostApiLessonNotesMutation } from 'libs/redux/services/karnama'
-import { Box, Drawer, Button, Divider, IconButton, Paper, Chip, Breadcrumbs, Link, Typography } from '@mui/material'
+import { Box, Drawer, Button, Divider, IconButton, Paper, Chip, Breadcrumbs, Link, Typography, CircularProgress } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'; // Importing the Delete Icon
 import CheckOutlined from '@mui/icons-material/CheckOutlined'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; // Down arrow
@@ -24,6 +24,8 @@ import styles from './play.module.scss'
 import { tovToString } from 'utils/helpers/formatTime'
 
 function PlayComponent() {
+  const isProd = process.env.NODE_ENV === 'production'
+
   const dispatch = useDispatch()
   const { query, push } = useRouter()
   const [selectedLesson, setSelectedLesson] = useState<Lesson>({})
@@ -33,8 +35,8 @@ function PlayComponent() {
   const { playDrawerStatus } = useSelector((state: RootState) => state.navbar)
   const lessonId = Number(query.slug?.[1])
   const { data } = useGetApiCoursesByIdQuery({ id: Number(query.slug?.[0]) })
-  const [saveNewNote] = usePostApiLessonNotesMutation()
-  const [deleteNote] = useDeleteApiLessonNotesByIdMutation()
+  const [saveNewNote, { isLoading }] = usePostApiLessonNotesMutation()
+  const [deleteNote, { isLoading: deleteLoading }] = useDeleteApiLessonNotesByIdMutation()
   const { data: notes, refetch } = useGetApiLessonNotesQuery({ lessonId })
 
   const [toV, setToV] = useState(0)
@@ -123,7 +125,7 @@ function PlayComponent() {
 
   const list = () => (
     <Box
-      sx={{ width: 350 }}
+      sx={{ width: "100%" }}
       role='presentation'
     >
       {sectionsData?.map((section, index) => (
@@ -134,15 +136,16 @@ function PlayComponent() {
           style={{ borderBottom: '1px solid rgba(255,255,255,.35)' }}
         >
           <Row
-            className='mx-1 my-0'
+            onClick={() => toggleSection(section.id as number)}
+            className='mx-0 my-0'
             direction='row'
             justify='space-between'
-
+            style={{ cursor: 'pointer' }}
 
           >
             <span className={styles['play__lesson--title']}>{section.title}</span>
 
-            <IconButton onClick={() => toggleSection(section.id as number)}>
+            <IconButton >
               {openSections[section.id as number] ? <ChevronLeftIcon htmlColor="#ffffff" /> : <ExpandMoreIcon htmlColor="#ffffff" />}
             </IconButton>
 
@@ -189,6 +192,14 @@ function PlayComponent() {
           لیست ویدئوها
         </Button>
         <Drawer
+          sx={{
+            width: '20rem',
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: '20rem',
+              boxSizing: 'border-box',
+            },
+          }}
           anchor='left'
           PaperProps={{
             sx: {
@@ -209,16 +220,13 @@ function PlayComponent() {
                 timeOfVideo={
                   selectedLesson?.userLessonCompleteds?.[0]?.timeOfVideo
                 }
-                src={selectedLesson.videoUrl}
-                //src="https://files.vidstack.io/sprite-fight/720p.mp4"
+                src={isProd ? selectedLesson.videoUrl : "https://files.vidstack.io/sprite-fight/720p.mp4"}
                 onTimeChange={onTimeChange}
               />
             </Row>
           </div>
         </div>
         <Row className={styles['play__row']} direction='column' gap={2}>
-          <h1></h1>
-          <h2></h2>
           <Breadcrumbs aria-label="breadcrumb">
             <Link color="inherit" href={`/courses/${data?.id}`}>
               {data?.titleFa}
@@ -257,7 +265,7 @@ function PlayComponent() {
               /></div>
               <Row direction='row' justify='space-between' >
 
-                <ButtonComponent btnType='primary' style={{ width: "100px" }} onClick={saveNewNoteHandler}>ثبت</ButtonComponent>
+                <ButtonComponent btnType='primary' style={{ width: "100px" }} onClick={saveNewNoteHandler} loading={isLoading}>ثبت</ButtonComponent>
                 <ButtonComponent btnType='ghost' onClick={() => setShowNewNote(false)}>بستن</ButtonComponent>
               </Row>
             </>}
@@ -274,7 +282,11 @@ function PlayComponent() {
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <Chip onClick={() => { setChangeCurrentTime(note.toV as number) }} label={tovToString(note.toV as number)} />
                   <IconButton edge="end" aria-label="delete" onClick={() => deleteNoteHandler(note.id as number)}>
-                    <DeleteIcon />
+                    {deleteLoading ?
+                      <CircularProgress size={24} /> // Show loading spinner
+                      :
+                      <DeleteIcon />
+                    }
                   </IconButton>
                 </div>              </Row>
             </Paper>
