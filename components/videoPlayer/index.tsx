@@ -72,7 +72,7 @@ export const VideoJS = (props: any) => {
     }
   }
   useEffect(() => {
-    setShowNewUGQ(paused)
+    setShowNewUGQ && setShowNewUGQ(paused)
     
     const interval = setInterval(checkAndCount, 1000)
     return () => {
