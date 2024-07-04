@@ -169,6 +169,7 @@ const navigations = [
   {
     title: 'تاریخچه سفارش‌ها',
     path: '/dashboard/u/orderhistory/',
+    apath: `OrderHistory`,
     icon: <Iconify icon='mdi:history' />,
   },
   {
