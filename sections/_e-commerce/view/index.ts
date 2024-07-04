@@ -8,7 +8,6 @@ export { default as EcommerceWishlistView } from './EcommerceWishlistView';
 export { default as EcommerceCompareView } from './EcommerceCompareView';
 //
 export { default as EcommerceAccountPersonalView } from './EcommerceAccountPersonalView';
-export { default as EcommerceAccountOrderHistory } from './EcommerceAccountOrderHistory';
 export { default as EcommerceAccountWishlistView } from './EcommerceAccountWishlistView';
 export { default as EcommerceAccountVouchersView } from './EcommerceAccountVouchersView';
 export { default as EcommerceAccountOrdersView } from './EcommerceAccountOrdersView';
