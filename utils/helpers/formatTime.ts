@@ -27,6 +27,21 @@ export function fToNow(date: InputValue) {
       })
     : '';
 }
+export function tovToString(a:number){
+  // Calculate hours, minutes, and seconds
+  const hours = Math.floor(a / 3600);
+  const minutes = Math.floor((a % 3600) / 60);
+  const seconds = a % 60;
+
+  // Format each part with leading zeros if necessary
+  const shours = String(hours).padStart(2, '0');
+  const sminutes = String(minutes).padStart(2, '0');
+  const sseconds = String(seconds).padStart(2, '0');
+
+  // Return formatted string
+  return `${shours}:${sminutes}:${sseconds}`;
+}
+
 export function durationToString(a :number,hour :string,minute : string){
   if(a<60)
   return '-'

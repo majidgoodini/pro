@@ -8,6 +8,7 @@ export const addTagTypes = [
   'Courses',
   'Exam',
   'Gift',
+  'LessonNotes',
   'Mentor',
   'Payments',
   'Pricing',
@@ -480,6 +481,48 @@ export const injectedRtkApi = api
         }),
         providesTags: ['Gift'],
       }),
+      getApiLessonNotes: build.query<
+        GetApiLessonNotesApiResponse,
+        GetApiLessonNotesApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/api/LessonNotes`,
+          params: { lessonId: queryArg.lessonId },
+        }),
+        providesTags: ['LessonNotes'],
+      }),
+      putApiLessonNotes: build.mutation<
+        PutApiLessonNotesApiResponse,
+        PutApiLessonNotesApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/api/LessonNotes`,
+          method: 'PUT',
+          body: queryArg.lessonNote,
+        }),
+        invalidatesTags: ['LessonNotes'],
+      }),
+      postApiLessonNotes: build.mutation<
+        PostApiLessonNotesApiResponse,
+        PostApiLessonNotesApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/api/LessonNotes`,
+          method: 'POST',
+          body: queryArg.lessonNote,
+        }),
+        invalidatesTags: ['LessonNotes'],
+      }),
+      deleteApiLessonNotesById: build.mutation<
+        DeleteApiLessonNotesByIdApiResponse,
+        DeleteApiLessonNotesByIdApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/api/LessonNotes/${queryArg.id}`,
+          method: 'DELETE',
+        }),
+        invalidatesTags: ['LessonNotes'],
+      }),
       getSubUsersCredit: build.query<
         GetSubUsersCreditApiResponse,
         GetSubUsersCreditApiArg
@@ -788,6 +831,23 @@ export type GetDistinctedPlayLogsApiArg = void
 export type GetGiftApiResponse = unknown
 export type GetGiftApiArg = {
   code?: string
+}
+export type GetApiLessonNotesApiResponse =
+  /** status 200 Success */ LessonNote[]
+export type GetApiLessonNotesApiArg = {
+  lessonId?: number
+}
+export type PutApiLessonNotesApiResponse = unknown
+export type PutApiLessonNotesApiArg = {
+  lessonNote: LessonNote
+}
+export type PostApiLessonNotesApiResponse = /** status 200 Success */ LessonNote
+export type PostApiLessonNotesApiArg = {
+  lessonNote: LessonNote
+}
+export type DeleteApiLessonNotesByIdApiResponse = unknown
+export type DeleteApiLessonNotesByIdApiArg = {
+  id: number
 }
 export type GetSubUsersCreditApiResponse =
   /** status 200 Success */ CompanyAdminCreditDto[]
@@ -2092,6 +2152,14 @@ export type DistinctedPlayLog = {
   titleFa?: string | null
   examQuestions?: number | null
 }
+export type LessonNote = {
+  id?: number
+  userId?: number | null
+  lessonId?: number | null
+  text?: string | null
+  insertDate?: string | null
+  toV?: number | null
+}
 export type CompanyAdminCreditDto = {
   id?: number
   adminId?: number
@@ -2218,6 +2286,11 @@ export const {
   useLazyGetDistinctedPlayLogsQuery,
   useGetGiftQuery,
   useLazyGetGiftQuery,
+  useGetApiLessonNotesQuery,
+  useLazyGetApiLessonNotesQuery,
+  usePutApiLessonNotesMutation,
+  usePostApiLessonNotesMutation,
+  useDeleteApiLessonNotesByIdMutation,
   useGetSubUsersCreditQuery,
   useLazyGetSubUsersCreditQuery,
   useAddSubUsersCreditMutation,

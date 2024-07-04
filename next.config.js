@@ -17,6 +17,9 @@ const isProd = process.env.NODE_ENV === 'production'
  */
 
 const next = {
+  transpilePackages: ['@mdxeditor/editor'],
+  reactStrictMode: true,
+
   typescript: {
     ignoreBuildErrors: process.env.IGNORE_BUILD_ERRORS === 'true',
   },
@@ -54,6 +57,8 @@ const next = {
     // { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }
   ) => {
     const configCopy = { ...config }
+    configCopy.experiments = { ...configCopy.experiments, topLevelAwait: true }
+
     configCopy.module.rules.push({
       test: /\.svg$/,
       use: ['@svgr/webpack'],

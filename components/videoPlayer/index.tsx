@@ -17,13 +17,18 @@ export const VideoJS = (props: any) => {
   const paused = useMediaState('paused', player);
 
   const { accessToken } = useSelector((state: RootState) => state.auth)
-  const { src, id, timeOfVideo, setShowNewUGQ } = props
-  console.log("timeOfVideo", timeOfVideo)
+  const { src, id, timeOfVideo, setShowNewUGQ, onTimeChange, changeCurrentTime } = props
+
   const [secondCounter, setSecondCounter] = useState(0)
 
   const [sendLog] = useLogMutation()
-
   useEffect(() => {
+    console.log(changeCurrentTime)
+    if (changeCurrentTime && player.current)
+      player.current.currentTime = changeCurrentTime
+  }, [changeCurrentTime])
+
+  useEffect(() => { 
     const handleOrientationChange = () => {
       console.log(screen.orientation.angle)
       if (screen.orientation.angle === 90 || screen.orientation.angle === -90) {
@@ -65,15 +70,16 @@ export const VideoJS = (props: any) => {
           localSendLog('Playing')
           return 0
         }
-        localStorage.setItem(`currentTimeVideo-${id}`,(player.current?.currentTime as number).toFixed(0))
+        localStorage.setItem(`currentTimeVideo-${id}`, (player.current?.currentTime as number).toFixed(0))
         return t + (player.current?.playbackRate as number ?? 0)
       })
 
     }
+    onTimeChange && onTimeChange(player.current?.currentTime)
   }
   useEffect(() => {
     setShowNewUGQ && setShowNewUGQ(paused)
-    
+
     const interval = setInterval(checkAndCount, 1000)
     return () => {
       clearInterval(interval)
@@ -87,7 +93,7 @@ export const VideoJS = (props: any) => {
   }
 
 
- 
+
 
 
   // useEffect(() => {
@@ -102,13 +108,14 @@ export const VideoJS = (props: any) => {
   // }, [playerRef])
 
   return (
+    <div style={{direction:"ltr"}}>
     <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions" clipStartTime={10}
       poster='https://newcdn.namatek.com/playerposter.jpg'>
       <DefaultVideoLayout icons={defaultLayoutIcons} />
       <MediaProvider />
 
     </MediaPlayer >
-
+    </div>
   )
 }
 

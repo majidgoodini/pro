@@ -3,9 +3,10 @@ import { useSelector } from 'react-redux'
 // @mui
 import { Typography } from '@mui/material'
 import ElearningCourseDetailsLessonItem from './ElearningCourseDetailsLessonItem'
-import ElearningCourseDetailsLessonsDialog from './ElearningCourseDetailsLessonsDialog'
+// import ElearningCourseDetailsLessonsDialog from './ElearningCourseDetailsLessonsDialog'
 import type { Lesson, Section, UserLessonViewMinute } from 'libs/redux/services/karnama'
 import type { RootState } from 'libs/redux/store'
+import { useRouter } from 'next/router'
 
 // ----------------------------------------------------------------------
 
@@ -15,10 +16,10 @@ type Props = {
   canPlay: boolean
 }
 
-export default function ElearningCourseDetailsLessonList({ section,graph ,canPlay}: Props) {
+export default function ElearningCourseDetailsLessonList({ section, graph, canPlay }: Props) {
   const [selectLesson, setSelectLesson] = useState<Lesson | null>(null)
   const { details } = useSelector((state: RootState) => state.course)
-
+  const { push } = useRouter()
   const [open, setOpen] = useState(false)
 
   const [play, setPlay] = useState(false)
@@ -31,9 +32,10 @@ export default function ElearningCourseDetailsLessonList({ section,graph ,canPla
   }
 
   const handleOpen = (lesson: Lesson) => {
-    setOpen(true)
+    //setOpen(true)
     if (lesson) {
-      handleSelectVideo(lesson)
+      push(`/play/${details.id}/${lesson.id}/${lesson.title}`)
+      //handleSelectVideo(lesson)
     }
   }
 
@@ -54,7 +56,7 @@ export default function ElearningCourseDetailsLessonList({ section,graph ,canPla
 
   return (
     <div>
-      <Typography variant='h4' sx={{ mt: 3,mb:1 }}>
+      <Typography variant='h4' sx={{ mt: 3, mb: 1 }}>
         {section.title}
       </Typography>
 
@@ -66,12 +68,12 @@ export default function ElearningCourseDetailsLessonList({ section,graph ,canPla
           expanded={expanded === String(lesson.id)}
           onExpanded={handleExpanded(String(lesson.id))}
           onOpen={() => handleOpen(lesson)}
-          graph={graph.filter(t=>t.lessonId===lesson.id)}
+          graph={graph.filter(t => t.lessonId === lesson.id)}
           canPlay={canPlay}
         />
       ))}
 
-      <ElearningCourseDetailsLessonsDialog
+      {/* <ElearningCourseDetailsLessonsDialog
         selected={play}
         open={open}
         lessons={details.sections as Section[]}
@@ -79,7 +81,7 @@ export default function ElearningCourseDetailsLessonList({ section,graph ,canPla
         selectLesson={selectLesson}
         onVideoEnded={handleVideoEnded}
         onSelectVideo={(lesson) => setSelectLesson(lesson)}
-      />
+      /> */}
     </div>
   )
 }

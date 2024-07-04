@@ -110,7 +110,7 @@ export default function MainLayout({ children }: Props) {
       </Box>
 
       {!asPath.startsWith('/play') && <Footer />}
-      {isMdUp ||
+      {isMdUp || asPath.startsWith('/play') ||
 
 
         <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, boxShadow: '0px -3px 5px rgba(0,0,0,0.15)' }} >
