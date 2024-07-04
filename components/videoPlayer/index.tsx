@@ -110,7 +110,9 @@ export const VideoJS = (props: any) => {
   return (
     <div style={{direction:"ltr"}}>
     <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions" clipStartTime={10}
-      poster='https://newcdn.namatek.com/playerposter.jpg'>
+      poster='https://newcdn.namatek.com/playerposter.jpg'
+      playsInline
+      >
       <DefaultVideoLayout icons={defaultLayoutIcons} />
       <MediaProvider />
 
