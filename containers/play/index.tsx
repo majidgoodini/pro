@@ -8,7 +8,6 @@ import DeleteIcon from '@mui/icons-material/Delete'; // Importing the Delete Ico
 import CheckOutlined from '@mui/icons-material/CheckOutlined'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; // Down arrow
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'; // Left arrow
-
 import VideoJS from 'components/videoPlayer'
 import ButtonComponent from 'components/ui/Button'
 import Row from 'components/ui/Row'
@@ -16,21 +15,26 @@ import cn from 'classnames'
 
 import { MDXEditor, UndoRedo, ListsToggle, BoldItalicUnderlineToggles, toolbarPlugin, listsPlugin } from '@mdxeditor/editor'
 import Markdown from 'react-markdown'
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import he from 'he'; // Import he for HTML entities decoding
 
 import '@mdxeditor/editor/style.css'
-import type { Lesson } from 'libs/redux/services/karnama'
+import type { Lesson, Section } from 'libs/redux/services/karnama'
 import type { RootState } from 'libs/redux/store'
 import styles from './play.module.scss'
 import { tovToString } from 'utils/helpers/formatTime'
 
+
 function PlayComponent() {
   const isProd = process.env.NODE_ENV === 'production'
-
+  const { accessToken } = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch()
   const { query, push } = useRouter()
   const [selectedLesson, setSelectedLesson] = useState<Lesson>({})
   const [selectedSection, setSelectedSection] = useState<Section>({})
   const [changeCurrentTime, setChangeCurrentTime] = useState(0)
+  const [showNewUGQ, setShowNewUGQ] = useState(false)
 
   const { playDrawerStatus } = useSelector((state: RootState) => state.navbar)
   const lessonId = Number(query.slug?.[1])
@@ -41,9 +45,14 @@ function PlayComponent() {
 
   const [toV, setToV] = useState(0)
   const [showNewNote, setShowNewNote] = useState(false)
-  const sectionsData = data?.sections
   const [openSections, setOpenSections] = useState<{ [key: number]: boolean }>({});
   const ref = useRef<MDXEditorMethods>(null)
+  const sectionsData = data?.sections
+
+  const handleNewUGQ = () => {
+    const url = `/dashboard/UGQ/${lessonId}?tov=${toV}`
+    window.open(url, "_blank", "noreferrer");
+  }
 
   const toggleSection = (id: number) => {
     setOpenSections(prevState => ({
@@ -122,6 +131,37 @@ function PlayComponent() {
 
       dispatch(playDrawer(open))
     }
+
+  const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  const fileExtension = '.xlsx';
+  const fileName = `یادداشتهای ${data?.titleFa}`;
+  const sheetName = 'Sheet1';
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+  const exportToExcel = () => {
+    // Format data into a worksheet
+    if (!notes) return
+    console.log(notes)
+    const formattedData = notes.map(({ toV, text }) => ({ Time: formatTime(toV), Text: he.decode(text) }));
+
+    const ws = XLSX.utils.json_to_sheet(formattedData);
+    const wb = { Sheets: { [sheetName]: ws }, SheetNames: [sheetName] };
+
+    // Convert the workbook to an Excel file
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+
+    // Save the file using FileSaver.js
+    const excelBlob = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(excelBlob, fileName + fileExtension);
+  };
+
+
+
+
+
 
   const list = () => (
     <Box
@@ -215,6 +255,7 @@ function PlayComponent() {
           <div className={styles['play__videoWrapperWrapper']}>
             <Row className={styles['play__videoWrapper']}>
               <VideoJS
+                setShowNewUGQ={setShowNewUGQ}
                 changeCurrentTime={changeCurrentTime}
                 id={selectedLesson.id}
                 timeOfVideo={
@@ -291,6 +332,14 @@ function PlayComponent() {
                 </div>              </Row>
             </Paper>
           )}
+          {!!notes && !!notes.length &&
+            <ButtonComponent btnType='ghost' style={{ width: "200px" }} onClick={exportToExcel}>
+              دانلود یادداشت‌ها</ButtonComponent>}
+          {accessToken && showNewUGQ &&
+            
+              <ButtonComponent btnType='primary' style={{ alignSelf:"flex-end", width: "200px" }} onClick={handleNewUGQ}>طراحی سوال برای آزمون</ButtonComponent>
+          }
+
         </Row>
       </Row>
     </Row>
