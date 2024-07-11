@@ -134,7 +134,7 @@ function PlayComponent() {
 
   const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   const fileExtension = '.xlsx';
-  const fileName = `یادداشتهای ${data?.titleFa}`;
+  const fileName = `یادداشتهای ${data?.titleFa} - ${selectedLesson.title}`;
   const sheetName = 'Sheet1';
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
