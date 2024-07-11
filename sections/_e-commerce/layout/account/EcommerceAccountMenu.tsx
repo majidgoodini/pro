@@ -83,6 +83,12 @@ export const companyNavigations = [
     apath: `Segment`,
     icon: <Iconify icon='mdi:format-list-group' />,
   },
+  {
+    title: 'بروزرسانی ها',
+    path: '/dashboard/c/updates/',
+    apath: `VersionHistory`,
+    icon: <Iconify icon='mdi:refresh' />,
+  },
 
   {
     title: 'پیامک',
@@ -168,8 +174,7 @@ const navigations = [
   },
   {
     title: 'تاریخچه سفارش‌ها',
-    path: '/dashboard/u/orderhistory/',
-    apath: `OrderHistory`,
+    path: '/dashboard/orderhistory/',
     icon: <Iconify icon='mdi:history' />,
   },
   {
