@@ -106,6 +106,7 @@
     "videojs-hls-quality-selector": "^1.1.4",
     "videojs-hotkeys": "^0.2.28",
     "videojs-playbackrate-adjuster": "^1.0.1",
+    "vidstack": "^0.6.15",
     "yet-another-react-lightbox": "^3.8.2",
     "yup": "^1.1.1"
   },
