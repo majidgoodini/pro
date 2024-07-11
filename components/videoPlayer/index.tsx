@@ -79,7 +79,8 @@ export const VideoJS = (props: any) => {
   }
   useEffect(() => {
     setShowNewUGQ && setShowNewUGQ(paused)
-
+    console.log("paused",paused)
+    localSendLog(paused===true ? 'Pause' : 'Play')
     const interval = setInterval(checkAndCount, 1000)
     return () => {
       clearInterval(interval)
@@ -108,15 +109,16 @@ export const VideoJS = (props: any) => {
   // }, [playerRef])
 
   return (
-    <div style={{direction:"ltr"}}>
-    <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions" clipStartTime={10}
-      poster='https://newcdn.namatek.com/playerposter.jpg'
-      playsInline
+    <div style={{ direction: "ltr" }}>
+      <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions"
+        poster='https://newcdn.namatek.com/playerposter.jpg'
+        playsInline
+        
       >
-      <DefaultVideoLayout icons={defaultLayoutIcons} />
-      <MediaProvider />
+        <DefaultVideoLayout icons={defaultLayoutIcons} />
+        <MediaProvider />
 
-    </MediaPlayer >
+      </MediaPlayer >
     </div>
   )
 }
