@@ -174,8 +174,9 @@ const navigations = [
   },
   {
     title: 'تاریخچه سفارش‌ها',
-    path: '/dashboard/orderhistory/',
+    apath: 'OrderHistory',
     icon: <Iconify icon='mdi:history' />,
+    path: '/dashboard/u/orderhistory/',
   },
   {
     title: 'آزمون و مدرک',
