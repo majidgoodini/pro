@@ -197,7 +197,7 @@ export default function ElearningCourseDetailsInfo({ course }: Props) {
  <Button
             btnType='primary'
             size='large'
-            href={'https://namatek.com/'+(details?.imageUrl as string).replace("https://proback.namatek.com/Uploads/Course/","").substring(0,3)}
+            href={'https://namatek.com/'+(details?.imageUrl as string).replace("https://cdn.namatek.com/X/","").substring(0,3)}
             target='_blank'
           >
             خرید (صفحه محصول)
