@@ -57,10 +57,7 @@ export default function ElearningCourseDetailsInfo({ course }: Props) {
       return false
 
     if (details.superPremium)
-      return ((data.isInCompany &&
-        data.credits &&
-        data.credits.find((t) => t.courseId == details.id)) ||
-        data.premium?.package === 1)
+      return details.hasAccess
     else if (data.premium?.package === 0)
       return true
     return false

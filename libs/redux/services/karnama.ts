@@ -1590,6 +1590,7 @@ export type Course = {
   lessonCount?: number | null
   share?: number | null
   threeCharId?: string | null
+  launchDate?: string | null
   category?: Category
   provider?: ContentProvider
   comments?: Comment[] | null
@@ -2030,7 +2031,6 @@ export type UserWithCourse = {
   lockoutEnd?: string | null
   lockoutEnabled?: boolean
   accessFailedCount?: number
-  customerId?: number | null
   firstName?: string | null
   lastName?: string | null
   joinDate?: string
@@ -2136,6 +2136,7 @@ export type CourseDetailDto = {
   description?: string | null
   superPremium?: boolean
   errorMessage?: string | null
+  hasAccess?: boolean
   sections?: Section[] | null
   courseTeachers?: CourseTeacher[] | null
   category?: Category

@@ -33,7 +33,7 @@ function PlayComponent() {
   const { query, push } = useRouter()
   const [selectedLesson, setSelectedLesson] = useState<Lesson>({})
   const [selectedSection, setSelectedSection] = useState<Section>({})
-  const [changeCurrentTime, setChangeCurrentTime] = useState(0)
+  const [changeCurrentTime, setChangeCurrentTime] = useState(-1)
   const [showNewUGQ, setShowNewUGQ] = useState(false)
 
   const { playDrawerStatus } = useSelector((state: RootState) => state.navbar)
@@ -257,6 +257,7 @@ function PlayComponent() {
               <VideoJS
                 setShowNewUGQ={setShowNewUGQ}
                 changeCurrentTime={changeCurrentTime}
+                setChangeCurrentTime={setChangeCurrentTime}
                 id={selectedLesson.id}
                 timeOfVideo={
                   selectedLesson?.userLessonCompleteds?.[0]?.timeOfVideo

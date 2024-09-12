@@ -17,15 +17,16 @@ export const VideoJS = (props: any) => {
   const paused = useMediaState('paused', player);
 
   const { accessToken } = useSelector((state: RootState) => state.auth)
-  const { src, id, timeOfVideo, setShowNewUGQ, onTimeChange, changeCurrentTime } = props
+  const { src, id, timeOfVideo, setShowNewUGQ, onTimeChange, changeCurrentTime, setChangeCurrentTime } = props
 
   const [secondCounter, setSecondCounter] = useState(0)
 
   const [sendLog] = useLogMutation()
   useEffect(() => {
     console.log(changeCurrentTime)
-    if (changeCurrentTime && player.current)
+    if (changeCurrentTime>=0 && player.current)
       player.current.currentTime = changeCurrentTime
+    setChangeCurrentTime(-1)
   }, [changeCurrentTime])
 
   // useEffect(() => { 
@@ -79,8 +80,8 @@ export const VideoJS = (props: any) => {
   }
   useEffect(() => {
     setShowNewUGQ && setShowNewUGQ(paused)
-    console.log("paused",paused)
-    localSendLog(paused===true ? 'Pause' : 'Play')
+    console.log("paused", paused)
+    localSendLog(paused === true ? 'Pause' : 'Play')
     const interval = setInterval(checkAndCount, 1000)
     return () => {
       clearInterval(interval)
@@ -113,7 +114,7 @@ export const VideoJS = (props: any) => {
       <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions"
         poster='https://newcdn.namatek.com/playerposter.jpg'
         playsInline
-        
+
       >
         <DefaultVideoLayout icons={defaultLayoutIcons} />
         <MediaProvider />
