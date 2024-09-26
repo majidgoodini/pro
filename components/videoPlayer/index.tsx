@@ -91,9 +91,8 @@ export const VideoJS = (props: any) => {
   }, [paused])
 
   function onLoadedMetadata(nativeEvent: MediaLoadedMetadataEvent) {
-    // if (player.current)
-    // player.current.currentTime = timeOfVideo || 0
-    console.log(nativeEvent)
+    if (player.current && timeOfVideo)
+      player.current.currentTime = timeOfVideo
   }
 
 
