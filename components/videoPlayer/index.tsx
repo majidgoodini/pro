@@ -24,9 +24,11 @@ export const VideoJS = (props: any) => {
   const [sendLog] = useLogMutation()
   useEffect(() => {
     console.log(changeCurrentTime)
-    if (changeCurrentTime>=0 && player.current)
-      player.current.currentTime = changeCurrentTime
-    setChangeCurrentTime(-1)
+    if (changeCurrentTime >= 0) {
+      if (player.current)
+        player.current.currentTime = changeCurrentTime
+      setChangeCurrentTime(-1)
+    }
   }, [changeCurrentTime])
 
   // useEffect(() => { 
@@ -90,7 +92,7 @@ export const VideoJS = (props: any) => {
 
   function onLoadedMetadata(nativeEvent: MediaLoadedMetadataEvent) {
     // if (player.current)
-      // player.current.currentTime = timeOfVideo || 0
+    // player.current.currentTime = timeOfVideo || 0
     console.log(nativeEvent)
   }
 
@@ -113,8 +115,11 @@ export const VideoJS = (props: any) => {
     <div style={{ direction: "ltr" }}>
       <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions"
         poster='https://newcdn.namatek.com/playerposter.jpg'
+        viewType='video'
+        streamType='on-demand'
+        logLevel='warn'
+        crossOrigin
         playsInline
-
       >
         <DefaultVideoLayout icons={defaultLayoutIcons} />
         <MediaProvider />
