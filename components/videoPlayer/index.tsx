@@ -11,6 +11,7 @@ import { SeekForward10Icon } from '@vidstack/react/icons';
 
 
 import { defaultLayoutIcons, DefaultVideoLayout } from '@vidstack/react/player/layouts/default';
+import { CircularProgress } from '@mui/material';
 
 export const VideoJS = (props: any) => {
   const player = useRef<MediaPlayerInstance>(null);
@@ -54,7 +55,7 @@ export const VideoJS = (props: any) => {
 
 
   const localSendLog = (action: string) => {
-    if (accessToken && player.current) {
+    if (accessToken && player.current && id) {
       sendLog({
         playLogDto: {
           action,
@@ -110,6 +111,8 @@ export const VideoJS = (props: any) => {
   //   }
   // }, [playerRef])
 
+  if (!id || !src)
+    return <CircularProgress/>
   return (
     <div style={{ direction: "ltr" }}>
       <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions"
