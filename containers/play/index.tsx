@@ -41,7 +41,7 @@ function PlayComponent() {
   const { data } = useGetApiCoursesByIdQuery({ id: Number(query.slug?.[0]) })
   const [saveNewNote, { isLoading }] = usePostApiLessonNotesMutation()
   const [deleteNote, { isLoading: deleteLoading }] = useDeleteApiLessonNotesByIdMutation()
-  const { data: notes, refetch } = useGetApiLessonNotesQuery({ lessonId })
+  const { data: notes, refetch } = useGetApiLessonNotesQuery({ lessonId },{ skip: !accessToken })
 
   const [toV, setToV] = useState(0)
   const [showNewNote, setShowNewNote] = useState(false)
