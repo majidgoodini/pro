@@ -60,7 +60,7 @@ function PlayComponent() {
       [id]: !prevState[id],
     }));
   };
-  const onTimeChange = (t: number) => setToV(+t.toFixed(0))
+  const onTimeChange = (t: number) => setToV(+t?.toFixed(0))
   const deleteNoteHandler = (id: number) => {
     deleteNote({ id }).then(() => {
       refetch()
