@@ -72,7 +72,7 @@ export default function ElearningCourseDetailsHero({ course }: Props) {
       }}
     >
       <Container sx={{ overflow: 'hidden' }}>
-        {details?.errorMessage && <Alert severity={details.errorMessage.includes('فعال') ? 'success' : 'warning'} sx={{ mb: 3 }}>
+        {details?.errorMessage && <Alert severity={details.errorMessage==='فعال' ? 'success' : 'warning'} sx={{ mb: 3 }}>
           <div dangerouslySetInnerHTML={{
             __html:
               details.errorMessage
