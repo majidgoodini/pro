@@ -12,13 +12,16 @@ import { SeekForward10Icon } from '@vidstack/react/icons';
 
 import { defaultLayoutIcons, DefaultVideoLayout } from '@vidstack/react/player/layouts/default';
 import { CircularProgress } from '@mui/material';
+import { useRouter } from 'next/router';
 
 export const VideoJS = (props: any) => {
+  const { push } = useRouter()
   const player = useRef<MediaPlayerInstance>(null);
   const paused = useMediaState('paused', player);
+  const ended = useMediaState('ended', player);
 
   const { accessToken } = useSelector((state: RootState) => state.auth)
-  const { src, id, timeOfVideo, setShowNewUGQ, onTimeChange, changeCurrentTime, setChangeCurrentTime } = props
+  const { next, src, id, timeOfVideo, setShowNewUGQ, onTimeChange, changeCurrentTime, setChangeCurrentTime } = props
 
   const [secondCounter, setSecondCounter] = useState(0)
 
@@ -81,6 +84,15 @@ export const VideoJS = (props: any) => {
     }
     onTimeChange && onTimeChange(player.current?.currentTime)
   }
+
+  useEffect(() => {
+    if (ended)
+      localSendLog('End')
+    if (ended && next) {
+      push(next)
+      console.log('go to next lesson')
+    }
+  }, [ended])
   useEffect(() => {
     setShowNewUGQ && setShowNewUGQ(paused)
     console.log("paused", paused)
@@ -112,7 +124,7 @@ export const VideoJS = (props: any) => {
   // }, [playerRef])
 
   if (!id || !src)
-    return <CircularProgress/>
+    return <CircularProgress />
   return (
     <div style={{ direction: "ltr" }}>
       <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions"

@@ -49,6 +49,30 @@ function PlayComponent() {
   const ref = useRef<MDXEditorMethods>(null)
   const sectionsData = data?.sections
 
+const getNextLesson = (): string | null => {
+  if (!data?.sections || !selectedLesson.id) return null;
+
+  let foundCurrent = false;
+  
+  // Iterate through all sections
+  for (const section of data.sections) {
+    if (!section.lessons) continue;
+    
+    // Iterate through lessons in current section
+    for (let i = 0; i < section.lessons.length; i++) {
+        if (foundCurrent && section.lessons[i]) {
+         return `/play/${data.id}/${section.lessons[i].id}/${section.lessons[i].title}`;
+      }
+      // Mark when we find current lesson
+      if (section.lessons[i].id === selectedLesson.id)
+        foundCurrent = true;
+    }
+    
+  }
+
+  return null; // Return null if no next lesson found
+};
+
   const handleNewUGQ = () => {
     const url = `/dashboard/UGQ/${lessonId}?tov=${toV}`
     window.open(url, "_blank", "noreferrer");
@@ -264,6 +288,7 @@ function PlayComponent() {
                 }
                 src={isProd ? selectedLesson.videoUrl : "https://files.vidstack.io/sprite-fight/720p.mp4"}
                 onTimeChange={onTimeChange}
+                next={getNextLesson()}
               />
             </Row>
           </div>
