@@ -78,7 +78,7 @@ export default function ElearningCourseDetailsHero({ course }: Props) {
               details.errorMessage
           }}></div></Alert>}
         {details?.country && details.country != 'IR' && <Alert severity={'warning'} sx={{ mb: 3 }}>
-          لطفا در صورت استفاده از VPN، آن را غیر فعال کنید تا بهبود عملکرد سایت و تعرفه نیم بهای اینترنت را تجربه کنید.
+          لطفا در صورت استفاده از VPN، آن را غیر فعال کنید تا از عملکرد بهتر سایت و تعرفه نیم بهای اینترنت بهره‌مند شوید.
         </Alert>}
         {intl.formatMessage({ id: 'lang' }) === 'fa-IR' &&
 
