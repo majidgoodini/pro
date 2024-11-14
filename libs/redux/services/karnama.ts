@@ -1335,6 +1335,7 @@ export type CompanyAdminCredit = {
   insertDate?: string
   companyId?: number
   isActive?: boolean | null
+  canDoPreExam?: boolean | null
   expireDate?: string | null
   admin?: AspNetUser
   company?: Company
@@ -2061,6 +2062,7 @@ export type ResetPasswordForm = {
 export type CompanyUserDto = {
   id?: number
   isActive?: boolean
+  canDoPreExam?: boolean
   userId?: number
   username?: string | null
   fullname?: string | null
@@ -2136,6 +2138,7 @@ export type CourseDetailDto = {
   description?: string | null
   superPremium?: boolean
   errorMessage?: string | null
+  country?: string | null
   hasAccess?: boolean
   sections?: Section[] | null
   courseTeachers?: CourseTeacher[] | null

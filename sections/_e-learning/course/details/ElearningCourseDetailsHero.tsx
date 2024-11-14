@@ -72,11 +72,14 @@ export default function ElearningCourseDetailsHero({ course }: Props) {
       }}
     >
       <Container sx={{ overflow: 'hidden' }}>
-        {details?.errorMessage && <Alert severity={details.errorMessage==='فعال' ? 'success' : 'warning'} sx={{ mb: 3 }}>
+        {details?.errorMessage && <Alert severity={details.errorMessage === 'فعال' ? 'success' : 'warning'} sx={{ mb: 3 }}>
           <div dangerouslySetInnerHTML={{
             __html:
               details.errorMessage
           }}></div></Alert>}
+        {details?.country && details.country != 'IR' && <Alert severity={'warning'} sx={{ mb: 3 }}>
+          لطفا در صورت استفاده از VPN، آن را غیر فعال کنید تا بهبود عملکرد سایت و تعرفه نیم بهای اینترنت را تجربه کنید.
+        </Alert>}
         {intl.formatMessage({ id: 'lang' }) === 'fa-IR' &&
 
           <CustomBreadcrumbs
