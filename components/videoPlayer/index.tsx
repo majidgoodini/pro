@@ -89,7 +89,7 @@ export const VideoJS = (props: any) => {
     if (ended)
       localSendLog('End')
     if (ended && next) {
-      push(next)
+      // push(next)
       console.log('go to next lesson')
     }
   }, [ended])
