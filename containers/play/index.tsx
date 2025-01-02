@@ -287,6 +287,7 @@ const getNextLesson = (): string | null => {
                   selectedLesson?.userLessonCompleteds?.[0]?.timeOfVideo
                 }
                 src={isProd ? selectedLesson.videoUrl : "https://files.vidstack.io/sprite-fight/720p.mp4"}
+                hasSubtitle={selectedLesson.hasSubtitle}
                 onTimeChange={onTimeChange}
                 next={getNextLesson()}
               />

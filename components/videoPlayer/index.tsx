@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
-import { MediaLoadedMetadataEvent, SeekButton, MediaPlayer, MediaPlayerInstance, MediaPlayingEvent, MediaProvider, useMediaState, DefaultLayoutTranslations, Controls } from '@vidstack/react';
+import { MediaLoadedMetadataEvent, SeekButton, MediaPlayer, MediaPlayerInstance, MediaPlayingEvent, MediaProvider, useMediaState, DefaultLayoutTranslations, Controls, Track } from '@vidstack/react';
 
 // See "Icons" component page for setup before importing the following:
 import { SeekForward10Icon } from '@vidstack/react/icons';
@@ -21,8 +21,8 @@ export const VideoJS = (props: any) => {
   const ended = useMediaState('ended', player);
 
   const { accessToken } = useSelector((state: RootState) => state.auth)
-  const { next, src, id, timeOfVideo, setShowNewUGQ, onTimeChange, changeCurrentTime, setChangeCurrentTime } = props
-
+  const { next, src, id, timeOfVideo, setShowNewUGQ, onTimeChange, changeCurrentTime, setChangeCurrentTime,hasSubtitle } = props
+console.log(props)
   const [secondCounter, setSecondCounter] = useState(0)
 
   const [sendLog] = useLogMutation()
@@ -135,10 +135,20 @@ export const VideoJS = (props: any) => {
         crossOrigin
         playsInline
       >
-        <DefaultVideoLayout icons={defaultLayoutIcons} />
-        <MediaProvider />
+        <MediaProvider>
+          {hasSubtitle && (
+            <Track
+              src={src.replace('.m3u8','.vtt').replace('.mp4','.vtt')}
+              kind="subtitles"
+              label="Persian"
+              lang="fa"
+              default
+            />
 
-      </MediaPlayer >
+          )}
+        </MediaProvider>
+        <DefaultVideoLayout icons={defaultLayoutIcons} />
+      </MediaPlayer>
     </div>
   )
 }
