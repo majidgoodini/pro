@@ -1,6 +1,6 @@
 import { useLogMutation } from 'libs/redux/services/karnama'
 import { RootState } from 'libs/redux/store'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
@@ -21,11 +21,13 @@ export const VideoJS = (props: any) => {
   const ended = useMediaState('ended', player);
 
   const { accessToken } = useSelector((state: RootState) => state.auth)
-  const { next, src, id, timeOfVideo, setShowNewUGQ, onTimeChange, changeCurrentTime, setChangeCurrentTime,hasSubtitle } = props
+  const { next, src, id, timeOfVideo, setShowNewUGQ, onTimeChange, changeCurrentTime, setChangeCurrentTime, hasSubtitle } = props
 console.log(props)
   const [secondCounter, setSecondCounter] = useState(0)
+  const [lastPausedState, setLastPausedState] = useState<boolean | undefined>(undefined)
 
   const [sendLog] = useLogMutation()
+
   useEffect(() => {
     console.log(changeCurrentTime)
     if (changeCurrentTime >= 0) {
@@ -56,8 +58,33 @@ console.log(props)
   //   };
   // }, []);
 
+  useEffect(() => {
+    if (ended)
+      localSendLog('End')
+    if (ended && next) {
+      // push(next)
+      console.log('go to next lesson')
+    }
+  }, [ended])
 
-  const localSendLog = (action: string) => {
+  useEffect(() => {
+    if (setShowNewUGQ) {
+      setShowNewUGQ(paused)
+    }
+  }, [paused, setShowNewUGQ])
+
+  useEffect(() => {
+    if (paused === lastPausedState) return;
+    
+    setLastPausedState(paused);
+    
+    if (paused !== undefined) {
+      localSendLog(paused ? 'Pause' : 'Play');
+    }
+  }, [paused]);
+
+  const localSendLog = useCallback((action: string) => {
+    
     if (accessToken && player.current && id) {
       sendLog({
         playLogDto: {
@@ -68,9 +95,9 @@ console.log(props)
         },
       })
     }
-  }
+  }, [accessToken, id, sendLog])
 
-  const checkAndCount = () => {
+  const checkAndCount = useCallback(() => {
     if (!paused) {
       setSecondCounter((t) => {
         if (t >= 60) {
@@ -80,28 +107,14 @@ console.log(props)
         localStorage.setItem(`currentTimeVideo-${id}`, (player.current?.currentTime as number).toFixed(0))
         return t + (player.current?.playbackRate as number ?? 0)
       })
-
     }
     onTimeChange && onTimeChange(player.current?.currentTime)
-  }
+  }, [paused, id, localSendLog, onTimeChange])
 
   useEffect(() => {
-    if (ended)
-      localSendLog('End')
-    if (ended && next) {
-      // push(next)
-      console.log('go to next lesson')
-    }
-  }, [ended])
-  useEffect(() => {
-    setShowNewUGQ && setShowNewUGQ(paused)
-    console.log("paused", paused)
-    localSendLog(paused === true ? 'Pause' : 'Play')
     const interval = setInterval(checkAndCount, 1000)
-    return () => {
-      clearInterval(interval)
-    }
-  }, [paused])
+    return () => clearInterval(interval)
+  }, [checkAndCount])
 
   function onLoadedMetadata(nativeEvent: MediaLoadedMetadataEvent) {
     if (player.current && timeOfVideo && timeOfVideo < player.current.duration-20)

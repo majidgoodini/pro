@@ -1,4 +1,4 @@
-import { type KeyboardEvent, type MouseEvent, useState, useEffect, useRef } from 'react'
+import { type KeyboardEvent, type MouseEvent, useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import { playDrawer } from 'libs/redux/slices/navbar'
@@ -38,7 +38,12 @@ function PlayComponent() {
 
   const { playDrawerStatus } = useSelector((state: RootState) => state.navbar)
   const lessonId = Number(query.slug?.[1])
-  const { data } = useGetApiCoursesByIdQuery({ id: Number(query.slug?.[0]) })
+  const { data } = useGetApiCoursesByIdQuery({ id: Number(query.slug?.[0]) }, {
+    refetchOnMountOrArgChange: false,
+    skip: !query.slug?.[0],
+    refetchOnReconnect: false,
+    refetchOnFocus: false
+  })
   const [saveNewNote, { isLoading }] = usePostApiLessonNotesMutation()
   const [deleteNote, { isLoading: deleteLoading }] = useDeleteApiLessonNotesByIdMutation()
   const { data: notes, refetch } = useGetApiLessonNotesQuery({ lessonId },{ skip: !accessToken })
@@ -84,7 +89,7 @@ const getNextLesson = (): string | null => {
       [id]: !prevState[id],
     }));
   };
-  const onTimeChange = (t: number) => setToV(+t?.toFixed(0))
+  const onTimeChange = useMemo(() => (t: number) => setToV(+t?.toFixed(0)), []);
   const deleteNoteHandler = (id: number) => {
     deleteNote({ id }).then(() => {
       refetch()
@@ -182,11 +187,6 @@ const getNextLesson = (): string | null => {
     FileSaver.saveAs(excelBlob, fileName + fileExtension);
   };
 
-
-
-
-
-
   const list = () => (
     <Box
       sx={{ width: "100%" }}
@@ -283,10 +283,8 @@ const getNextLesson = (): string | null => {
                 changeCurrentTime={changeCurrentTime}
                 setChangeCurrentTime={setChangeCurrentTime}
                 id={selectedLesson.id}
-                timeOfVideo={
-                  selectedLesson?.userLessonCompleteds?.[0]?.timeOfVideo
-                }
-                src={isProd ? selectedLesson.videoUrl : "https://files.vidstack.io/sprite-fight/720p.mp4"}
+                timeOfVideo={selectedLesson?.userLessonCompleteds?.[0]?.timeOfVideo}
+                src={!isProd ? selectedLesson.videoUrl : "https://files.vidstack.io/sprite-fight/720p.mp4"}
                 hasSubtitle={selectedLesson.hasSubtitle}
                 onTimeChange={onTimeChange}
                 next={getNextLesson()}

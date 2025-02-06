@@ -417,7 +417,7 @@ export const injectedRtkApi = api
           method: 'POST',
           body: queryArg.playLogDto,
         }),
-        invalidatesTags: ['Courses'],
+        invalidatesTags: []
       }),
       superPremiumCourses: build.query<
         SuperPremiumCoursesApiResponse,
