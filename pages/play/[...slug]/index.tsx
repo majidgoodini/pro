@@ -14,6 +14,7 @@ function PlayPage() {
       </Head>
 
       <PlayComponent />
+      <script src="https://proback.namatek.com/js/hls.min.js"></script>
     </>
   )
 }
