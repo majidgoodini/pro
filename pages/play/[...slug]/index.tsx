@@ -15,7 +15,7 @@ function PlayPage() {
       </Head>
 
       <PlayComponent />
-      <Script src="https://proback.namatek.com/js/hls.min.js" strategy="afterInteractive" />
+      <Script src="https://proback.namatek.com/js/hls.min.js" strategy="beforeInteractive" />
     </>
   )
 }
