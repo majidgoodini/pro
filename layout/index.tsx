@@ -23,6 +23,9 @@ const Layout = ({ children, className }: LayoutProps) => {
 
   return (
     <>
+        <Head>
+    <script src="https://proback.namatek.com/js/hls.min.js" />
+  </Head>
       <SubscriptionRenewalModal />
 
       {/* <div className='container'> */}
