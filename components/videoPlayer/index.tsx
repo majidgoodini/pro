@@ -145,7 +145,6 @@ console.log(props)
         viewType='video'
         streamType='on-demand'
         logLevel='warn'
-        hlsLibrary='https://proback.namatek.com/js/hls.min.js'
         crossOrigin
         playsInline
       >
