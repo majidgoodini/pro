@@ -142,6 +142,7 @@ console.log(props)
     <div style={{ direction: "ltr" }}>
       <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions"
         poster='https://newcdn.namatek.com/playerposter.jpg'
+        hlsLibrary='https://proback.namatek.com/js/hls.min.js'
         viewType='video'
         streamType='on-demand'
         logLevel='warn'
