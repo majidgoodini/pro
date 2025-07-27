@@ -147,7 +147,7 @@ console.log(props)
         logLevel='warn'
         crossOrigin
         playsInline
-        hls-library="https://proback.namatek.com/js/hls.min.js" 
+        hlsLibrary="https://proback.namatek.com/js/hls.min.js"
       >
         <MediaProvider>
           {hasSubtitle && (
