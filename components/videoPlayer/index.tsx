@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
-import { MediaLoadedMetadataEvent, SeekButton, MediaPlayer, MediaPlayerInstance, MediaPlayingEvent, MediaProvider, useMediaState, DefaultLayoutTranslations, Controls, Track } from '@vidstack/react';
+import { MediaLoadedMetadataEvent, SeekButton, MediaPlayer, MediaPlayerInstance, MediaPlayingEvent, MediaProvider, useMediaState, DefaultLayoutTranslations, Controls, Track, isHLSProvider, type MediaProviderAdapter, type MediaProviderChangeEvent } from '@vidstack/react';
 
 // See "Icons" component page for setup before importing the following:
 import { SeekForward10Icon } from '@vidstack/react/icons';
@@ -136,13 +136,28 @@ console.log(props)
   //   }
   // }, [playerRef])
 
+  const HLS_URL = 'https://proback.namatek.com/js/hls.min.js';
+
+  function onProviderChange(
+    provider: MediaProviderAdapter | null,
+    _evt: MediaProviderChangeEvent,
+  ) {
+    if (isHLSProvider(provider)) {
+      // ↙ نسخهٔ میزبانی‌شدهٔ خودتان
+      provider.library = HLS_URL;          // ➊ استاتیک با یک رشته URL
+      // یا برای بارگذاری تنبل:
+      // provider.library = () => import(/* webpackIgnore: true */ HLS_URL).then(m => m.default);
+    }
+  }
+  
+
   if (!id || !src)
     return <CircularProgress />
   return (
     <div style={{ direction: "ltr" }}>
-      <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions"
-        poster='https://newcdn.namatek.com/playerposter.jpg'
-        hlsLibrary='https://proback.namatek.com/js/hls.min.js'
+      <MediaPlayer autoPlay onLoadedMetadata={onLoadedMetadata} src={src} ref={player} storage="videoOptions" onProviderChange={onProviderChange}
+        //poster='https://newcdn.namatek.com/playerposter.jpg'
+        //hlsLibrary='https://proback.namatek.com/js/hls.min.js'
         viewType='video'
         streamType='on-demand'
         logLevel='warn'
