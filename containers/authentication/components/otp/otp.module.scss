@@ -142,7 +142,7 @@
 
   &--inputError {
     > * {
-      border-color: map-get($colors, secondary);
+      border-color: map-get($colors, error);
     }
   }
 
@@ -150,7 +150,7 @@
     width: 100%;
     text-align: start;
     margin-block-start: 0.5rem;
-    color: map-get($colors, secondary);
+    color: map-get($colors, error);
   }
 
   &--edit {
