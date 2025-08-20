@@ -72,11 +72,65 @@ export default function ElearningCourseDetailsHero({ course }: Props) {
       }}
     >
       <Container sx={{ overflow: 'hidden' }}>
-        {details?.errorMessage && <Alert severity={details.errorMessage === 'فعال' ? 'success' : 'warning'} sx={{ mb: 3 }}>
+        
+        {/* {details?.errorMessage && <Alert severity={details.errorMessage === 'فعال' ? 'success' : 'warning'} sx={{ mb: 3 }}>
           <div dangerouslySetInnerHTML={{
             __html:
               details.errorMessage
-          }}></div></Alert>}
+          }}></div></Alert>} */}
+
+          {details?.errorMessage && (
+            <Alert
+              severity={
+                details.errorMessage === 'فعال'
+                  ? "success"
+                  : "warning"
+              }
+              sx={{
+                mb: 3,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                py: 1.5,
+              }}
+            >
+              <Box sx={{ flex: 1, pr: 2 }}>
+                <div
+                  dangerouslySetInnerHTML={{ __html: details.errorMessage }}
+                ></div>
+              </Box>
+    
+              {details.errorMessage.includes("منتظر انجام پیش آزمون") && (
+                <Link
+                  href="https://pro.namatek.com/dashboard/aexam/"
+                  underline="none"
+                >
+                  <Box
+                    sx={{
+                      display: "inline-block",
+                      bgcolor: "primary.main",
+                      color: "common.white",
+                      px: 2,
+                      py: 0.5,
+                      borderRadius: 0.5,
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      fontSize: "0.875rem",
+                      cursor: "pointer",
+                      "&:hover": { bgcolor: "primary.dark" },
+                    }}
+                  >
+                    پیش آزمون
+                  </Box>
+                </Link>
+              )}
+            </Alert>
+          )}
+        
+           
+
+        
+        
         {details?.country && details.country != 'IR' && <Alert severity={'warning'} sx={{ mb: 3 }}>
           لطفا در صورت استفاده از VPN، آن را غیر فعال کنید تا از عملکرد بهتر سایت و تعرفه نیم بهای اینترنت بهره‌مند شوید.
         </Alert>}
