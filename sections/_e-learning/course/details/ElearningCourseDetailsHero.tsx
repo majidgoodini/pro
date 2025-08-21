@@ -89,7 +89,7 @@ export default function ElearningCourseDetailsHero({ course }: Props) {
               sx={{
                 mb: 3,
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: "flex-start",
                 alignItems: "flex-start",
                 py: 1.5,
               }}
