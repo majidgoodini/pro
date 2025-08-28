@@ -120,7 +120,13 @@ export const companyNavigations = [
     title: 'آزمون',
     path: '/dashboard/c/certificate/',
     apath: 'Exams',
-    icon: <Iconify icon='bi:check-square' />,
+    icon: <Iconify icon='mdi:checkbox-marked' />,
+  },
+   {
+    title: 'گزارش‌های مدیریتی',
+    path: '/dashboard/c/managerreport/',
+    apath: 'ManagerReport',
+    icon: <Iconify icon='mdi:file-chart-check-outline' />,
   },
 ]
 export function currentCompanyPage(path: string) {
